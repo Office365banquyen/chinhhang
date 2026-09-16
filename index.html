@@ -7,7 +7,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f0f2f5; color: #1c1e21; line-height: 1.6; }
-        .container { max-width: 480px; margin: 0 auto; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 90px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .container { max-width: 480px; margin: 0 auto; background: #ffffff; min-height: 100vh; position: relative; padding-bottom: 140px; /* Tăng khoảng trống chân trang */ box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         
         /* Header / Banner */
         .hero { background: linear-gradient(135deg, #0078d4 0%, #004578 100%); color: white; text-align: center; padding: 40px 20px 30px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
@@ -35,10 +35,16 @@
         /* Footer */
         .footer { text-align: center; padding: 0 20px 20px; font-size: 13px; color: #777; }
 
-        /* Nút Zalo Cố định */
-        .cta-container { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; padding: 15px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); box-shadow: 0 -5px 15px rgba(0,0,0,0.08); z-index: 100; border-top: 1px solid #eee; }
-        .zalo-btn { display: flex; justify-content: center; align-items: center; background: linear-gradient(90deg, #0068ff, #0054cc); color: white; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); animation: pulse 1.5s infinite; }
+        /* Nút Cố định (Container) */
+        .cta-container { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; padding: 15px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); box-shadow: 0 -5px 15px rgba(0,0,0,0.08); z-index: 100; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
         
+        /* Nút Zalo chính */
+        .zalo-btn { display: flex; justify-content: center; align-items: center; background: linear-gradient(90deg, #0068ff, #0054cc); color: white; padding: 16px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); animation: pulse 1.5s infinite; }
+        
+        /* Nút Copy phụ */
+        .copy-btn { display: flex; justify-content: center; align-items: center; background: transparent; color: #0068ff; border: 1px solid #0068ff; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; transition: all 0.3s ease; }
+        .copy-btn.success { background: #107c10; color: white; border-color: #107c10; }
+
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); }
             50% { transform: scale(1.03); box-shadow: 0 4px 25px rgba(0, 104, 255, 0.6); }
@@ -99,11 +105,42 @@
             <p>© 2024 Anh Dương Office Bản Quyền. Tất cả các quyền được bảo lưu.</p>
         </div>
 
+        <!-- Cụm nút CTA -->
         <div class="cta-container">
+            <!-- Nút chính mở Zalo -->
             <a href="https://zalo.me/0393356100" class="zalo-btn" target="_blank">
                 NHẬN BÁO GIÁ QUA ZALO NGAY
             </a>
+            
+            <!-- Nút phụ Copy Số -->
+            <button class="copy-btn" onclick="copyToClipboard('0393356100')">
+                Hoặc Copy Số Zalo: 0393356100
+            </button>
         </div>
     </div>
+
+    <!-- Script xử lý copy số điện thoại -->
+    <script>
+        function copyToClipboard(text) {
+            // Lấy phần tử nút copy
+            const copyBtn = document.querySelector('.copy-btn');
+            
+            // Xử lý chép vào khay nhớ tạm
+            navigator.clipboard.writeText(text).then(() => {
+                // Đổi giao diện nút khi copy thành công
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = "✅ Đã copy thành công!";
+                copyBtn.classList.add('success');
+                
+                // Trả lại trạng thái ban đầu sau 3 giây
+                setTimeout(() => {
+                    copyBtn.innerHTML = "Hoặc Copy Số Zalo: " + text;
+                    copyBtn.classList.remove('success');
+                }, 3000);
+            }).catch(err => {
+                alert("Lỗi khi copy. Vui lòng copy thủ công số: " + text);
+            });
+        }
+    </script>
 </body>
 </html>
